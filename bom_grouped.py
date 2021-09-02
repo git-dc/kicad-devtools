@@ -9,10 +9,10 @@
     Output: CSV (comma-separated)
     Grouped By: Value, Footprint
     Sorted By: Ref
-    Fields: Ref, Qnty, Value, Cmp name, Footprint, Description, Vendor
+    Fields: Ref, Qty, Value, Footprint, Mfr PN, Description
 
     Command line:
-    python "pathToFile/bom_csv_grouped_by_value_with_fp.py" "%I" "%O.csv"
+    python "pathToFile/bom_grouped.py" "%I" "%O.csv"
 """
 
 # Import the KiCad python helper module and the csv formatter
@@ -38,7 +38,9 @@ net = kicad_netlist_reader.netlist(sys.argv[1])
 # Open a file to write to, if the file cannot be opened output to stdout
 # instead
 try:
-    f = open(sys.argv[2], 'w')
+    fname = "/".join(sys.argv[2].strip().split("/")[:-1])+"/production/bom_grouped.csv"
+    print("BOM file location:", fname)
+    f = open(fname, 'w')
 except IOError:
     e = "Can't open output file for writing: " + sys.argv[2]
     print(__file__, ":", e, sys.stderr)
@@ -48,12 +50,13 @@ except IOError:
 out = csv.writer(f, delimiter=',', quotechar='\"', quoting=csv.QUOTE_ALL)
 
 # Output a set of rows for a header providing general information
-out.writerow(['Source:', net.getSource()])
-out.writerow(['Date:', net.getDate()])
-out.writerow(['Tool:', net.getTool()])
-out.writerow( ['Generator:', sys.argv[0]] )
-out.writerow(['Component Count:', len(net.components)])
-out.writerow(['Ref', 'Qnty', 'Value', 'Cmp name', 'Footprint', 'Description', 'Vendor'])
+# out.writerow(['Source:', net.getSource()])
+# out.writerow(['Date:', net.getDate()])
+# out.writerow(['Tool:', net.getTool()])
+# out.writerow( ['Generator:', sys.argv[0]] )
+# out.writerow(['Component Count:', len(net.components)])
+# out.writerow(['Ref', 'Qnty', 'Value', 'Cmp name', 'Footprint', 'Description', 'Vendor'])
+out.writerow(['Ref Designator', 'Qty', 'Value', 'Footprint', 'Mfr PN', 'Description'])
 
 
 # Get all of the components in groups of matching parts + values
@@ -63,19 +66,24 @@ grouped = net.groupComponents()
 # Output all of the component information
 for group in grouped:
     refs = ""
-
+    pns_list = []
+    part_numbers = ""
+    
     # Add the reference of every component in the group and keep a reference
     # to the component so that the other data can be filled in once per group
     for component in group:
         refs += fromNetlistText( component.getRef() ) + ", "
+        new_pn = fromNetlistText( component.getField("Mfr PN") )
+        if new_pn not in pns_list:
+            pns_list.append(new_pn)
+        part_numbers = ", ".join(pns_list)
         c = component
 
     # Fill in the component groups common data
     out.writerow([refs, len(group),
         fromNetlistText( c.getValue() ),
-        fromNetlistText( c.getPartName() ),
         fromNetlistText( c.getFootprint() ),
-        fromNetlistText( c.getDescription() ),
-        fromNetlistText( c.getField("Vendor") )])
+        part_numbers,
+        fromNetlistText( c.getDescription() )])
 
 
