@@ -56,7 +56,7 @@ out = csv.writer(f, delimiter=',', quotechar='\"', quoting=csv.QUOTE_ALL)
 # out.writerow( ['Generator:', sys.argv[0]] )
 # out.writerow(['Component Count:', len(net.components)])
 # out.writerow(['Ref', 'Qnty', 'Value', 'Cmp name', 'Footprint', 'Description', 'Vendor'])
-out.writerow(['Ref Designator', 'Qty', 'Value', 'Footprint', 'Mfr PN', 'Description'])
+out.writerow(['Ref', 'Qty', 'Value', 'Footprint', 'Mfr PN', 'Description'])
 
 
 # Get all of the components in groups of matching parts + values
