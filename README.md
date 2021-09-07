@@ -26,7 +26,7 @@ Generates a bill of materials. Components are sorted by ref, and are not grouped
  - Description
 
 ### `bom_auto-pkg.py`
-Generates two bills of materials: a grouped one `bom_grouped.csv` and a sorted ungrouped one `bom_sorted.csv`. Runs `link_pkger.sh` to link the `gbr_pkger.sh` into the most advanced `[version]/[revision]` directory in production, which in turn runs the `gbr_pkger.sh` to package up the mfg files.
+Generates two bills of materials: a grouped one `bom_grouped.csv` and a sorted ungrouped one `bom_sorted.csv`. The scripts to generate these BOMs are identical to the ones above. Runs `link_pkger.sh` to link the `gbr_pkger.sh` into the most advanced `[version]/[revision]` directory in `production/`, which in turn runs the `gbr_pkger.sh` to package up the mfg files.
 
 
 ## Gerber Tools:
