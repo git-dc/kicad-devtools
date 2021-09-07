@@ -25,8 +25,14 @@ Generates a bill of materials. Components are sorted by ref, and are not grouped
  - Mfr PN
  - Description
 
+### `bom_auto-pkg.py`
+Generates two bills of materials: a grouped one `bom_grouped.csv` and a sorted ungrouped one `bom_sorted.csv`. Runs `link_pkger.sh` to link the `gbr_pkger.sh` into the most advanced `[version]/[revision]` directory in production, which in turn runs the `gbr_pkger.sh` to package up the mfg files.
+
 
 ## Gerber Tools:
 
-### `gbr_packager.sh`
+### `gbr_pkger.sh`
 Packages the bom and gerber files into a .zip archive automatically baking version and revision numbers into the filename.
+
+### `link_pkger.sh`
+Creates a soft link to `gbr_pkger.sh` in the most advanced `[version]/[revision]` directory in `production/` and runs it to package up the mfg files.

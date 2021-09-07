@@ -32,6 +32,9 @@ def fromNetlistText( aText ):
     else:
         return aText
 
+#########################################################################################3
+# GROUPED BOM
+
 # Generate an instance of a generic netlist, and load the netlist tree from
 # the command line option. If the file doesn't exist, execution will stop
 net = kicad_netlist_reader.netlist(sys.argv[1])
@@ -87,3 +90,59 @@ for group in grouped:
         fromNetlistText( c.getFootprint() ),
         part_numbers,
         fromNetlistText( c.getDescription() )])
+
+
+
+#########################################################################################3
+# SORTED UNGROUPED BOM
+
+    
+# Generate an instance of a generic netlist, and load the netlist tree from
+# the command line option. If the file doesn't exist, execution will stop
+net = kicad_netlist_reader.netlist(sys.argv[1])
+
+# Open a file to write to, if the file cannot be opened output to stdout
+# instead
+try:
+    prj_path = "/".join(sys.argv[2].strip().split("/")[:-1])+"/production/"
+    fname = prj_path + "bom_sorted.csv"
+    print("BOM file location:", fname)
+    f = open(fname, 'w')
+except IOError:
+    e = "Can't open output file for writing: " + sys.argv[2]
+    print( __file__, ":", e, sys.stderr )
+    f = sys.stdout
+
+# Create a new csv writer object to use as the output formatter
+out = csv.writer(f, lineterminator='\n', delimiter=',', quotechar="\"", quoting=csv.QUOTE_ALL)
+
+# override csv.writer's writerow() to support utf8 encoding:
+def writerow( acsvwriter, columns ):
+    utf8row = []
+    for col in columns:
+        utf8row.append( fromNetlistText( str(col) ) )
+    acsvwriter.writerow( utf8row )
+
+components = net.getInterestingComponents()
+
+# Output a field delimited header line
+# writerow( out, ['Source:', net.getSource()] )
+# writerow( out, ['Date:', net.getDate()] )
+# writerow( out, ['Tool:', net.getTool()] )
+# writerow( out, ['Component Count:', len(components)] )
+writerow( out, ['Ref', 'Qty', 'Value', 'Footprint', 'Mfr PN', 'Description'] )
+
+# Output all of the component information (One component per row)
+for c in components:
+    writerow( out, [c.getRef(),
+                    "1",
+                    c.getValue(),
+                    c.getFootprint(),
+                    c.getField("Mfr PN"),
+                    c.getDescription()])
+
+    
+try:
+    os.system("$HOME/.local/share/kicad/5.99/plugins/devtools/gbr_packager/link_pkger.sh " + prj_path)
+except:
+    print("Attempted to link the automatic gbr packager over to the revision directory and failed.")
