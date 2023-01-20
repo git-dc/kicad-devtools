@@ -2,12 +2,12 @@
 Uses KiCAD environment variables to automatically retrieve project directory. Uses KiCAD project variables to automatically generate and find latest `version/revision/` directories within the project.
 
 ## Installation:
-1. Clone the repo to ~/.local/share/kicad/6.0/3rdparty/plugins/kicad-devtools
+1. Clone the repo to `~/.local/share/kicad/6.0/3rdparty/plugins/kicad-devtools`
 2. Look through the scripts in this library to make sure the paths are consistent with your directory setup.
 3. In Eeschema, open the BOM generation interface and add `bom_auto-pkg.py` as a new BOM script.
 
 ## How to Use:
-1. Generate gerbers and drill files from the PCBNew interface. This will automatically create the directories for the latest version and revision, as indicated by the project variables.
+1. Generate gerbers and drill files from the PCBNew interface. This will automatically create the directories for the latest version and revision, as indicated by the project variables. These path variables are encoded and saved in the project configuration files that should be version controlled together with the rest of the project files.
 2. Use the HTML BOM generator to create an assembly drawing. Place it in the `version/revision/` directory
 3. User BOM auto packager to generate BOMs and compress the fabrication package with all the necessary files.
 
