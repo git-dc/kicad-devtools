@@ -1,1 +1,1 @@
-/usr/share/kicad-nightly/plugins/kicad_netlist_reader.py
+/usr/share/kicad/plugins/kicad_netlist_reader.py
