@@ -143,6 +143,6 @@ for c in components:
 
     
 try:
-    os.system("$HOME/.local/share/kicad/6.0/3rdparty/plugins/kicad-devtools/gbr_packager/link_pkger.sh " + prj_path)
+    os.system("$HOME/.local/share/kicad/7.0/3rdparty/plugins/kicad-devtools/gbr_packager/link_pkger.sh " + prj_path)
 except:
     print("Attempted to link the automatic gbr packager over to the revision directory and failed.")

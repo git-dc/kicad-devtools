@@ -2,7 +2,7 @@
 Uses KiCAD environment variables to automatically retrieve project directory. Uses KiCAD project variables to automatically generate and find latest `version/revision/` directories within the project.
 
 ## Installation:
-1. Clone the repo to `~/.local/share/kicad/6.0/3rdparty/plugins/kicad-devtools`
+1. Clone the repo to `~/.local/share/kicad/7.0/3rdparty/plugins/kicad-devtools`
 2. Look through the scripts in this library to make sure the paths are consistent with your directory setup.
 3. In Eeschema, open the BOM generation interface and add `bom_auto-pkg.py` as a new BOM script.
 
